@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #f1f1f1;
+    margin: 0;
+    padding: 0;
+}
+
+.nav {
+    border-radius: 20px;
+    display: flex;
+    background-color: #1e1e1e;
+    padding: 15px 20px;
+}
+
+.nav-link {
+    color: #f1f1f1;
+    text-decoration: none;
+    padding: 10px 15px;
+    transition: background 0.3s;
+}
+
+.nav-link:hover {
+    background-color: #333;
+    border-radius: 5px;
+}
+
+.nav-link.active {
+    font-weight: bold;
+    color: #ffcc00;
+}
+
+.nav a:last-child {
+    margin-left: auto;
+}
+
+main {
+    text-align: center;
+    margin-top: 50px;
+}

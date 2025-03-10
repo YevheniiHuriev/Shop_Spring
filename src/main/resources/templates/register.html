@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/css/auth/register.css">
+    <title>Register</title>
+</head>
+<body>
+<h2>Register</h2>
+
+<form id="userRegister">
+    <label for="username">Username:</label>
+    <input type="text" id="username" required>
+    <br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" required>
+    <br>
+    <a href="/login">Login</a>
+    <button type="submit">Register</button>
+</form>
+
+<script>
+    $(document).ready(function() {
+        $("#userRegister").submit(function(event) {
+            event.preventDefault();
+
+            let user = {
+                username: $("#username").val(),
+                email: $("#email").val(),
+                password: $("#password").val(),
+            };
+
+            $.ajax({
+                url: "/auth/register",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(user),
+                success: function(data) {
+                    alert("Registration successful! You can now log in.");
+                    window.location.href = "/login.html";
+                },
+                error: function() {
+                    alert("Failed to register. Please try again.");
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

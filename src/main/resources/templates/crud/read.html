@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/css/products/read.css">
+    <title>Product List</title>
+</head>
+<body>
+
+<nav class="nav">
+    <a class="nav-link active" href="/">Home</a>
+</nav>
+
+<main>
+    <h1>Product List</h1>
+
+    <a href="/products/save"><button>Add New Product</button></a>
+
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Options</th>
+        </tr>
+        <tbody></tbody>
+    </table>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/api/products')
+            .then(response => response.json())
+            .then(products => {
+                let productTable = document.querySelector('tbody');
+                products.forEach(product => {
+                    let row = document.createElement('tr');
+                    row.innerHTML = `
+                            <td>${product.id}</td>
+                            <td>${product.name}</td>
+                            <td>${product.description}</td>
+                            <td>${product.price}</td>
+                            <td>${product.stock}</td>
+                            <td>
+                                <button onclick="window.location.href='/products/update/${product.id}'">Update</button>
+                                <button onclick="window.location.href='/products/delete/${product.id}'">Delete</button>
+                            </td>
+                        `;
+                    productTable.appendChild(row);
+                });
+            });
+    });
+</script>
+</body>
+</html>
