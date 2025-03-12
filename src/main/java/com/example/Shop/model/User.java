@@ -23,23 +23,24 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Size(min = 2, max = 255, message = "Name min: 2, max: 255")
     @Size(min = 2, max = 255, message = "Name min: 2, max: 255")
     @Column(nullable = false, length = 255)
     private String username;
+
     @Size(min = 2, max = 512, message = "Password min: 2, max: 512")
     @Size(min = 2, max = 512, message = "Password min: 2, max: 512")
     @Column(nullable = false, length = 255)
     private String password;
-    @Email
-    @Size(min = 2, max = 255, message = "Email min: 2, max: 255")
+
     @Email
     @Size(min = 2, max = 255, message = "Email min: 2, max: 255")
     @Column(nullable = false, length = 255)
     private String email;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<OrderDemo> orders;
 
     @ManyToMany(fetch = FetchType.EAGER)

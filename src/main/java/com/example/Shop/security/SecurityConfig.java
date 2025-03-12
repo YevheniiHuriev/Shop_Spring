@@ -43,10 +43,10 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Вимикає CSRF-захист (для REST API зазвичай не потрібен)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/exit", "/login", "/register",
-                                "/auth/register", "/auth/login","/favicon.ico",
+                        .requestMatchers("/", "/exit", "/login", "/check","/register",
+                                "/auth/register", "/auth/login", "auth/check","/favicon.ico",
                                 "/css/**").permitAll() // Дозволяє доступ без аутентифікації до реєстрації та входу
-                        .requestMatchers("/products/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER") // Доступ до продуктів тільки для адміністраторів і менеджерів
+                        .requestMatchers("/products/**", "/orders/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER") // Доступ до продуктів тільки для адміністраторів і менеджерів
                         .anyRequest().authenticated() // Всі інші запити вимагають аутентифікації
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Додає фільтр JWT перед стандартним фільтром аутентифікації

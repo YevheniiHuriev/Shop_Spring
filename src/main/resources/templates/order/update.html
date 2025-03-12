@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" href="/css/orders/update.css">
+  <title>Update Order</title>
+</head>
+<body>
+<h1>Update Order</h1>
+<form th:action="@{/orders/update/{id}(id=${order.id})}" method="post">
+  <input type="hidden" name="id" th:value="${order.id}">
+
+  <label>User:</label>
+  <select name="userId">
+    <option th:each="user : ${users}"
+            th:value="${user.id}"
+            th:text="${user.id}"
+            th:selected="${user.id == order.user.id}">
+    </option>
+  </select>
+  <br><br>
+
+  <label>Add New Product:</label><br>
+  <select id="productSelect">
+    <option value="">-- Select Product --</option>
+    <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
+  </select>
+  <button type="button" onclick="addProduct()">Add</button>
+
+  <br><br>
+
+  <label>Products in Order:</label>
+  <div id="selectedProducts">
+    <div th:each="item : ${order.orderItems}">
+      <input type="hidden" name="productIds" th:value="${item.product.id}">
+      <span th:text="${item.product.name}"></span>
+      <input type="number" name="quantities" th:value="${item.quantity}" min="1">
+      <button type="button" onclick="removeProduct(this)">Remove</button>
+    </div>
+  </div>
+  <br>
+
+  <a href="/orders" class="button-link">Back</a>
+  <button type="submit">Save</button>
+</form>
+
+<script>
+  function addProduct() {
+    let select = document.getElementById("productSelect");
+    let productId = select.value;
+    let productName = select.options[select.selectedIndex].text;
+
+    if (!productId) return;
+
+    let selectedProducts = document.getElementById("selectedProducts");
+
+    if (document.getElementById("product_" + productId)) {
+      return;
+    }
+
+    let div = document.createElement("div");
+    div.innerHTML = `
+                <input type="hidden" name="productIds" value="${productId}">
+                <span>${productName}</span>
+                <input type="number" name="quantities" value="1" min="1">
+                <button type="button" onclick="removeProduct(this)">Remove</button>
+            `;
+
+    selectedProducts.appendChild(div);
+  }
+
+  function removeProduct(button) {
+    button.parentElement.remove();
+  }
+</script>
+</body>
+</html>

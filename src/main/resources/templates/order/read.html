@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" href="/css/orders/read.css">
+  <title>Order List</title>
+</head>
+<body>
+
+<nav>
+  <a class="nav-link active" href="/">Home</a>
+</nav>
+
+<h1>Order List</h1>
+<a href="/orders/save" class="button-link">Create New Order</a>
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>User</th>
+    <th>Total Amount</th>
+    <th>Actions</th>
+  </tr>
+  <tr th:each="order : ${orders}">
+    <td th:text="${order.id}"></td>
+    <td th:text="${order.user.id}"></td>
+    <td th:text="${order.total}"></td>
+    <td>
+      <a th:href="@{/orders/update/{id}(id=${order.id})}" class="button-link">Edit</a>
+      <a th:href="@{/orders/delete/{id}(id=${order.id})}" class="button-link">Delete</a>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -41,7 +41,6 @@
                 data: JSON.stringify(user),
                 success: function(data) {
                     if (data && data.token) {
-                        localStorage.setItem("token", data.token);
                         alert("Login successful!");
                         window.location.href = "/";
                     } else {

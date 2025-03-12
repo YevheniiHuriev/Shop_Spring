@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" href="/css/orders/save.css">
+  <title>Create Order</title>
+</head>
+<body>
+<h1>Create Order</h1>
+<form action="#" th:action="@{/orders/save}" method="post">
+  <label>User:</label>
+  <select name="userId">
+    <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.id}"></option>
+  </select>
+  <br>
+
+  <select id="productSelect">
+    <option value="">-- Select Product --</option>
+    <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
+  </select>
+  <button type="button" onclick="addProduct()">Add</button>
+
+  <br><br>
+
+  <label>Selected Products:</label>
+  <div id="selectedProducts"></div>
+
+  <br>
+  <a href="/orders" class="button-link">Back</a>
+  <button type="submit">Create</button>
+</form>
+
+<script>
+  function addProduct() {
+    let select = document.getElementById("productSelect");
+    let productId = select.value;
+    let productName = select.options[select.selectedIndex].text;
+
+    if (!productId) return;
+
+    let selectedProducts = document.getElementById("selectedProducts");
+
+    if (document.getElementById("product_" + productId)) {
+      return;
+    }
+
+    let div = document.createElement("div");
+    div.innerHTML = `
+                <input type="checkbox" id="product_${productId}" name="productIds" value="${productId}" checked onclick="toggleQuantity(this)">
+                <label for="product_${productId}">${productName}</label>
+                <input type="number" name="quantities" class="quantity-input" min="1" placeholder="Quantity">
+                <button type="button" onclick="removeProduct(this)">Remove</button>
+            `;
+
+    selectedProducts.appendChild(div);
+  }
+
+  function removeProduct(button) {
+    button.parentElement.remove();
+  }
+
+  function toggleQuantity(checkbox) {
+    let quantityInput = checkbox.closest('div').querySelector('.quantity-input');
+    quantityInput.disabled = !checkbox.checked;
+    if (!checkbox.checked) {
+      quantityInput.value = "";
+    }
+  }
+</script>
+</body>
+</html>

@@ -6,6 +6,7 @@ import com.example.Shop.model.User;
 import com.example.Shop.repository.RoleRepository;
 import com.example.Shop.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.BeanDefinitionDsl;
@@ -13,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -116,4 +114,13 @@ public class AuthController {
         return ResponseEntity.ok(responseBody);
     }
 
+    @GetMapping("/check")
+    public ResponseEntity<?> checkAuth(HttpServletRequest request) {
+        String token = Arrays.stream(request.getCookies())
+                .filter(c -> "token".equals(c.getName()))
+                .map(Cookie::getValue)
+                .findFirst()
+                .orElse(null);
+        return token != null ? ResponseEntity.ok().build() : ResponseEntity.status(401).build();
+    }
 }
